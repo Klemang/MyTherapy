@@ -1,0 +1,151 @@
+article {
+    width: 80%;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+
+    border-radius: 8px;
+
+    padding: 35px;
+}
+
+.card {
+    display: flex;
+}
+
+.menu_gauche {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30%;
+
+    padding-right: 3%;
+    border-right: 1px solid rgb(192,192,192, 0.5);
+}
+
+.menu_gauche h1 {
+    font-size: 1rem;
+    margin: 10px;
+
+    text-align: center;
+}
+
+.menu_gauche ul {
+    padding: 0;
+}
+
+.menu_gauche li {
+    list-style: none;
+
+    margin: 25px 0px;
+    padding: 5px 0 5px 5%;
+    border-left: solid 5px #26b497;
+}
+
+.menu_gauche li a {
+    font-size: 0.8rem;
+    text-decoration: none;
+    color : #26b497;
+}
+
+.menu_gauche li:hover {
+    border-color: #365462;
+}
+
+.menu_gauche li:hover a {
+    color: #365462;
+}
+
+.menu_gauche .active {
+    border-color: #365462;
+}
+
+.menu_gauche .active a {
+    color: #365462;
+}
+
+.menu_gauche .deconnexion {
+    border-color: red;
+}
+
+.menu_gauche .deconnexion a {
+    color: red;
+}
+
+.menu_droit {
+    display: flex;
+    flex-direction: column;
+
+    width: 70%;
+    padding-left: 3%;
+
+    font-size: 0.8rem;
+}
+
+.grid {
+    grid-template-columns: 35% auto;
+
+    width: 35vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.grid label {
+    align-self: center;
+}
+
+.grid input,
+.grid select {
+    margin: 0;
+}
+
+.buttons_compte {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.buttons_compte button,
+#popup button {
+    font-size: 0.8rem;
+    border-radius: 25px;
+    padding: 10px 30px;
+
+    height: fit-content;
+}
+
+.buttons_compte .modifier {
+    background-color: #3C71F7;
+}
+
+.buttons_compte .enregistrer {
+    background-color: #62D926;
+    width: fit-content;
+}
+
+.buttons_compte .supprimer,
+#popup .confirmer {
+    background-color: #EE402E;
+}
+
+.p_error {
+    color: #EE402E;
+}
+
+.p_success {
+    color: #62D926;
+}
+
+#popup footer {
+    display: flex;
+    justify-content: end;
+}
+
+#popup footer form button {
+    margin-left: 15px;
+}
+
+#popup footer button {
+    margin: 0;
+}
+

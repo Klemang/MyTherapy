@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:fragment="grille">
+        <br>
+        <p th:if="${nom == null or nom == ''}" class="recommandations">Vos recommandations</p>
+
+        <p class="info" th:text="${info}"></p>
+
+        <div class="grille">
+            <article th:each="activite : ${activites}">
+                <header th:text="${activite.nom}"></header>
+                <div class="body">
+                    <div class="desc">
+                        <p>&#128221</p>
+                        <p class="description" th:text="${activite.description}"></p>
+                    </div>
+                    <div class="adre">
+                        <p>&#127968</p>
+                        <p class="adresse" th:text="${activite.adresse}"></p>
+                    </div>
+                </div>
+                <footer>
+                    <button class="secondary" th:attr="id=${activite.id}" onclick="ouvrir_popup_details(this.id)">+ Détails</button>
+                    <button th:attr="id=${activite.id}" onclick="ouvrir_popup_ajout(this.id)">Ajouter au programme</button>
+                </footer>
+            </article>
+        </div>
+    </div>
+</body>
+</html>

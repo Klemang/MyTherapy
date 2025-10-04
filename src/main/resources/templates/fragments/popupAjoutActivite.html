@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <article th:fragment="popup">
+        <header><h3>Ajouter l'activité au programme</h3></header>
+
+        <p>Vous allez ajouter <strong th:text="${activite.nom}"></strong> à un programme :</p>
+
+        <form method="post" th:action="@{|/activites/ajouter/${activite.id}|}">
+
+            <br>
+            <div th:if="${programmes.isEmpty()}">
+                <p><strong>Aucun programme en cours trouvé !</strong></p>
+            </div>
+            <select name="programme" th:if="${!programmes.isEmpty()}" required>
+                <option th:each="prog : ${programmes}" th:value="${prog.getId()}" th:text="${prog.getNom()}"></option>
+            </select>
+
+            <hr>
+
+            <div class="foot" th:if="${programmes.isEmpty()}">
+                <button type="button" class="secondary" onclick="fermer_popup('popup')">Retour</button>
+                <button type="button" th:attr="id=${activite.id}" onclick="ouvrir_popup_creerProgramme(this.id)">Créer un nouveau programme</button>
+            </div>
+            <div class="foot" th:if="${!programmes.isEmpty()}">
+                <button type="button" class="secondary" onclick="fermer_popup('popup')">Annuler</button>
+                <button type="submit">Confirmer</button>
+            </div>
+
+        </form>
+    </article>
+</body>
+</html>

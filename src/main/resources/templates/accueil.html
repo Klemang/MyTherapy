@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/styles/base.css">
+
+    <link rel="stylesheet" href="/styles/accueil.css">
+    <title>MyTherapy</title>
+</head>
+<body>
+    <nav th:replace="~{fragments/base :: header}">...</nav>
+
+
+    <div class="img_area">
+        <img src="/img/image_accueil.jpg" width="100%">
+        <div class="texts">
+            <h1>Votre solution pour mieux gérer votre santé</h1>
+            <small>Découvrez un ensemble d'activités adaptées à votre pathologie pour améliorer votre qualité de vie</small>
+        </div>
+    </div>
+
+    <div class="cards">
+        <article>
+            <h3>&#129658 Des recommandations adaptées à votre santé</h3>
+            <p>Recevez des suggestions d'activités personnalisées en fonction de votre pathologie. Profitez d’un accompagnement sur mesure pour améliorer votre bien-être !</p>
+        </article>
+        <article>
+            <h3>&#128198 Planifiez vos activités</h3>
+            <p>Organisez facilement votre emploi du temps grâce à notre gestionnaire d’activités. Ajoutez, modifiez ou supprimez vos événements en quelques clics !</p>
+        </article>
+        <article>
+            <h3>&#128202 Suivez votre progression</h3>
+            <p>Consultez des statistiques pour analyser votre progression. Visualisez vos réussites et évaluer-les !</p>
+        </article>
+    </div>
+
+    <div class="join">
+        <button onclick="location.href='/inscription'">Rejoignez MyTherapy</button>
+    </div>
+
+
+
+    <div th:replace="~{fragments/base :: footer}">...</div>
+</body>
+</html>

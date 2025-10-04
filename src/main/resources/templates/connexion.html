@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/styles/base.css">
+
+    <link rel="stylesheet" href="/styles/inscription.css">
+    <title>Connexion - MyTherapy</title>
+</head>
+<body>
+    <nav th:replace="~{fragments/base :: header}">...</nav>
+
+
+
+    <div class="card">
+        <article>
+            <h3>Connexion</h3>
+            <form method="POST" action="/connexion">
+                Email <input type="email" name="email" placeholder="Email" autocomplete="email">
+                Mot de passe <input type="password" name="motdepasse" placeholder="Mot de passe" autocomplete="new-password">
+
+                <br>
+                <div class="signup">
+                    <input type="submit" value="Se connecter">
+                </div>
+            </form>
+
+            <p class="p_error" th:text="${error}"></p>
+            <br>
+            <p class="p_login">Pas encore inscrit ? <a class="login" href="/inscription">S'inscrire</a> !</p>
+        </article>
+    </div>
+
+
+
+    <div th:replace="~{fragments/base :: footer}">...</div>
+</body>
+</html>

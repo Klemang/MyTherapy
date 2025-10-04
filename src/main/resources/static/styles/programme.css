@@ -1,0 +1,120 @@
+.rond-orange {
+    width: 15px;
+    height: 15px;
+    background-color: orange;
+    border-radius: 50%;
+}
+
+.rond-rouge {
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+table a {
+    text-decoration: none;
+}
+
+h2 {
+    display: flex;
+    justify-content: center;
+
+    margin-top: 30px;
+}
+
+.prog_en_cours,
+.prog_finis {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+progress {
+    vertical-align: middle;
+}
+
+#validerActivite .foot,
+#creerProgramme .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#validerActivite .foot button,
+#creerProgramme .foot button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 0;
+}
+
+#validerActivite .foot button[type="submit"],
+#creerProgramme .foot button[type="submit"] {
+    width: auto;
+}
+
+#validerActivite label {
+    display: flex;
+    align-items: center;
+}
+
+#validerActivite label input {
+    width: 120px;
+    height: 50px;
+
+    display: block;
+    margin: 0 0 0 20px;
+}
+
+.ajouter_prog {
+    display: flex;
+    justify-content: center;
+}
+
+.ajouter_activite {
+    display: flex;
+    flex-direction: column;
+}
+
+.ajouter_activite p {
+    font-size: 1rem;
+    align-self: center;
+}
+
+.ajouter_prog button,
+.ajouter_activite button {
+    align-self: center;
+    margin: auto auto 20px auto;
+    padding: 10px 20px;
+    border-radius: 30px;
+}
+
+.note_programme {
+    display: flex;
+    white-space: pre;
+    align-items: center;
+}
+
+.note_programme p {
+    margin: 0;
+}
+
+details {
+    width: 100%;
+}
+
+details summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+details summary p {
+    margin: 0;
+}
+
+details summary a {
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: 30px;
+}

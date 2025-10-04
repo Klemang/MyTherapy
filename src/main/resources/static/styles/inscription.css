@@ -1,0 +1,58 @@
+@media (min-width: 1000px) {
+    .p_error {
+        font-size: 20px;
+    }
+}
+
+.card {
+    width: 60%;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+
+.card article {
+    border-radius: 8px;
+
+    padding: 30px;
+}
+
+.card article h3 {
+    display: flex;
+    justify-content: center;
+}
+
+.signup {
+    display: flex;
+    justify-content: center;
+}
+
+.signup input {
+    border-radius: 25px;
+    font-weight: 700;
+    padding: 10px 20px;
+    margin-top: 30px;
+    width: 50%;
+}
+
+.p_error {
+    display: flex;
+    justify-content: center;
+    white-space: pre;
+
+    color: red;
+    font-weight: bold;
+}
+
+.p_login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: pre;
+}
+
+.login {
+    text-decoration: none;
+    font-weight: bold;
+}

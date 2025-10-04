@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <nav th:fragment="header">
+        <ul>
+            <li><a href="/"><img src="/img/logo_mytherapy.png" alt="Therapy Logo"></a></li>
+        </ul>
+
+        <ul class="buttons" th:if="${session != null && session.utilisateur != null}">
+            <li><a class="btn" href="/activites">Activités</a></li>
+            <li><a class="btn" href="/programmes">Mes programmes</a></li>
+            <li th:if="${session.utilisateur.getRole().equals('ADMIN')}"><a class="btn" href="#gestion">Gestion</a></li>
+        </ul>
+
+        <ul th:if="${session != null && session.utilisateur != null}">
+            <li>
+                <details class="dropdown">
+                    <summary role="button" class="secondary" th:text="${session.utilisateur.prenom} + ' ' + ${session.utilisateur.nom}"></summary>
+                    <ul dir="rtl">
+                        <li><a href="/compte">Mon compte</a></li>
+                        <li><a style="color: red" href="/deconnexion">Deconnexion</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+
+        <button onclick="location.href='/connexion'" class="login secondary" th:if="${session == null || session.utilisateur == null}">Se connecter</button>
+    </nav>
+
+
+    <div th:fragment="footer">
+        <br>
+        <br>
+        <br>
+
+        <div class="footer">
+            <p>&copy 2025 MyTherapy</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <article th:fragment="popup">
+        <header><h3>Détails de l'activité</h3></header>
+
+        <ul>
+            <li><strong>Nom : </strong><p th:text="${activite.nom}"></p></li>
+            <li><strong>Description : </strong><p th:text="${activite.description}"></p></li>
+            <li><strong>Adresse : </strong><p th:text="${activite.adresse}"></p></li>
+        </ul>
+
+        <p><strong>Disciplines :</strong></p>
+        <div class="listes">
+            <p th:each="discipline : ${activite.disciplines}" th:text="${discipline.nom}"></p>
+        </div>
+
+        <p><strong>Pathologies :</strong></p>
+        <div class="listes">
+            <p th:each="pathologie : ${activite.pathologies}" th:text="${pathologie.nom}"></p>
+        </div>
+
+        <footer>
+            <button class="secondary" id="btn_annuler" onclick="fermer_popup('popup')">Retour</button>
+        </footer>
+    </article>
+</body>
+</html>

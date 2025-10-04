@@ -1,0 +1,142 @@
+.recherche {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 30px;
+}
+
+.grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+}
+
+.grille article {
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.grille header {
+    font-weight: bold;
+}
+
+.grille .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.desc {
+    display: flex;
+}
+
+.desc .description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+
+    margin-bottom: 30px;
+    margin-left: 10px;
+}
+
+.adre {
+    display: flex;
+}
+
+.adre .adresse {
+    text-align: left;
+    margin-left: 10px;
+    margin-bottom: 0;
+}
+
+.grille footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.grille footer button {
+    padding: 10px 15px;
+    font-size: 0.7rem;
+}
+
+#grille .info {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+#grille .recommandations {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+#popup article {
+    width: 80%;
+}
+
+#popup .listes {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min-content;
+    gap: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#popup .listes::-webkit-scrollbar {
+    display: none;
+}
+
+#popup .listes p {
+    border-radius: 5px;
+    border: solid 2px #365462;
+    color: #365462;
+    padding: 5px;
+
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#popup .listes p {
+    color: #365462;
+}
+
+
+#popup footer,
+#popup .foot,
+#popup form .foot,
+#creerProgramme .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#popup footer button,
+#popup .foot button,
+#creerProgramme .foot button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 0;
+}
+
+#popup .foot button[type="submit"],
+#creerProgramme .foot button[type="submit"] {
+    width: auto;
+}

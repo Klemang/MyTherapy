@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/styles/base.css">
+
+    <link rel="stylesheet" href="/styles/programme.css">
+    <title>Mes programmes - MyTherapy</title>
+</head>
+<body>
+    <script>
+        function traitement(event, type, idProgramme, idActivite) {
+            event.preventDefault();
+
+            if (type === 'valider_activite') {
+                document.getElementById("idProgramme").value = idProgramme;
+                document.getElementById("idActivite").value = idActivite;
+                document.getElementById('validerActivite').open = true;
+            }
+            else {
+                fetch('/programmes/traitement/' + encodeURIComponent(type) + '?idProgramme=' + encodeURIComponent(idProgramme) + '&idActivite=' + encodeURIComponent(idActivite), {
+                    method: 'POST'
+                }).then(response => response.text())
+                    .then(data => {window.location.reload()});
+            }
+        }
+
+        function valider_activite(event, form) {
+            event.preventDefault();
+
+            const idProgramme = form.elements['idProgramme'].value;
+            const idActivite = form.elements['idActivite'].value;
+            const note = form.elements['note'].value;
+
+            fetch('/programmes/traitement/valider_activite?idProgramme=' + encodeURIComponent(idProgramme) + '&idActivite=' + encodeURIComponent(idActivite) + '&note=' + encodeURIComponent(note), {
+                method: 'POST'
+            }).then(response => response.text())
+                .then(data => {window.location.reload()});
+        }
+
+        function creerProgramme(event, form) {
+            event.preventDefault();
+
+            const nom = form.elements['nom'].value;
+            fetch("/programmes/creer?nom=" + encodeURIComponent(nom), {
+                method: 'POST'
+            }).then(response => response.text())
+                .then(data => {window.location.reload()});
+        }
+
+        function fermer_popup(nom) {
+            document.getElementById(nom).open = false;
+        }
+    </script>
+
+    <nav th:replace="~{fragments/base :: header}">...</nav>
+
+
+    <h2>Mes Programmes</h2>
+    <div class="ajouter_prog">
+        <button onclick="document.getElementById('creerProgramme').open = true;">Ajouter un programme</button>
+    </div>
+
+    <div class="prog_en_cours">
+        <h5>Programme(s) en cours</h5>
+
+        <div th:if="${prog_en_cours.isEmpty()}">
+            <p>Aucun programme n'est en cours !</p>
+        </div>
+        <div th:if="${!prog_en_cours.isEmpty()}">
+            <details th:each="programme : ${prog_en_cours.keySet()}">
+                <summary role="button" class="secondary">
+                    <p th:text="${programme.nom}"></p>
+                    <a th:onclick="|traitement(event, 'suppr_programme', ${programme.id}, 0)|" data-tooltip="Supprimer le programme">&#10060</a>
+                </summary>
+                <div class="ajouter_activite" th:if="${prog_en_cours.get(programme).isEmpty()}">
+                    <p>Ce programme n'a aucune activité !</p>
+                    <button onclick="location.href='/activites'">Ajouter une activité</button>
+                </div>
+                <table th:if="${!prog_en_cours.get(programme).isEmpty()}" class="striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Note</th>
+                        <th scope="col">Etat</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pa : ${prog_en_cours.get(programme)}">
+                        <th scope="row" th:text="${pa.activite.nom}"></th>
+                        <td th:text="${pa.note}"></td>
+                        <td>
+                            <div class="rond-orange" th:if="${pa.etat}=='EN_COURS'" data-tooltip="En cours"></div>
+                            <div class="rond-rouge" th:if="${pa.etat}=='TERMINE'" data-tooltip="Terminé"></div>
+                        </td>
+                        <td>
+                            <a href="#" th:onclick="|traitement(event, 'valider_activite', ${programme.id}, ${pa.activite.id})|" data-tooltip="Finir l'activité">&#9989</a>
+                            <a href="#" th:onclick="|traitement(event, 'suppr_activite', ${programme.id}, ${pa.activite.id})|" style="margin-left: 20px;" data-tooltip="Supprimer l'activité">&#10060</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3" th:if="${prog_en_cours.get(programme) != null}"><progress th:value="${#lists.size(prog_en_cours.get(programme).?[etat == 'TERMINE'])}" th:max="${prog_en_cours.get(programme).size()}" /></td>
+                        <td class="note_programme" th:if="${prog_en_cours.get(programme) != null}">Note : <p th:if="${!#lists.size(prog_en_cours.get(programme).?[etat == 'TERMINE']).equals(0)}" th:text="${#aggregates.sum(prog_en_cours.get(programme).?[etat == 'TERMINE'].![note]) / (#lists.size(prog_en_cours.get(programme).?[etat == 'TERMINE']) * 1.0)}"></p></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </details>
+        </div>
+    </div>
+
+
+    <dialog id="validerActivite">
+        <article>
+            <header><h3>Valider l'activité</h3></header>
+
+            <form method="post" onsubmit="valider_activite(event, this)">
+                <input type="hidden" id="idActivite" name="idActivite" value="">
+                <input type="hidden" id="idProgramme" name="idProgramme" value="">
+                <p>Choisissez la note de l'activité</p>
+                <label>Note : <input name="note" type="number" value="10" min="0" max="20"/></label>
+                <hr>
+                <div class="foot">
+                    <button type="button" class="secondary" onclick="fermer_popup('validerActivite')">Annuler</button>
+                    <button type="submit">Valider</button>
+                </div>
+            </form>
+        </article>
+    </dialog>
+
+
+
+    <br>
+    <br>
+
+
+
+
+    <div class="prog_finis">
+        <h5>Programme(s) finis</h5>
+
+        <div th:if="${prog_finis.isEmpty()}">
+            <p>Aucun programme n'est fini !</p>
+        </div>
+        <div th:if="${!prog_finis.isEmpty()}">
+            <details th:each="programme : ${prog_finis.keySet()}">
+                <summary role="button" class="secondary">
+                    <p th:text="${programme.nom}"></p>
+                    <a th:onclick="|traitement(event, 'suppr_programme', ${programme.id}, 0)|" data-tooltip="Supprimer le programme">&#10060</a>
+                </summary>
+                <table class="striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Note</th>
+                        <th scope="col">Etat</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pa : ${prog_finis.get(programme)}">
+                        <th scope="row" th:text="${pa.activite.nom}"></th>
+                        <td th:text="${pa.note}"></td>
+                        <td>
+                            <div class="rond-rouge" th:if="${pa.etat}=='TERMINE'" data-tooltip="Terminé"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="2"><progress value="100"/></td>
+                        <td class="note_programme" th:if="${prog_finis.get(programme) != null}">Note : <p th:if="${!#lists.size(prog_finis.get(programme).?[etat == 'TERMINE']).equals(0)}" th:text="${#aggregates.sum(prog_finis.get(programme).?[etat == 'TERMINE'].![note]) / (#lists.size(prog_finis.get(programme).?[etat == 'TERMINE']) * 1.0)}"></p></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </details>
+        </div>
+    </div>
+
+
+
+    <dialog id="creerProgramme">
+        <article>
+            <header><h3>Créer un nouveau programme</h3></header>
+
+            <form method="post" onsubmit="creerProgramme(event, this)">
+                <p>Entrer le nom de votre nouveau programme :</p>
+                <input type="text" name="nom">
+                <hr>
+                <div class="foot">
+                    <button type="button" class="secondary" onclick="fermer_popup('creerProgramme')">Annuler</button>
+                    <button type="submit">Créer</button>
+                </div>
+            </form>
+        </article>
+    </dialog>
+
+
+
+
+    <div th:replace="~{fragments/base :: footer}">...</div>
+</body>
+</html>

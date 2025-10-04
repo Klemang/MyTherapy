@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/styles/base.css">
+
+    <link rel="stylesheet" href="/styles/activite.css">
+    <title>Activités - MyTherapy</title>
+</head>
+<body>
+    <script>
+        function recherche() {
+            var nom = document.getElementById('search').value;
+
+            fetch("/activites?nom=" + encodeURIComponent(nom), {
+                method: 'POST',
+            })
+            .then(response => response.text())
+            .then(data => {
+            document.getElementById('grille').innerHTML = data;
+            });
+        }
+
+        function ouvrir_popup_details(idActivite) {
+            fetch("/activites/details/" + encodeURIComponent(idActivite), {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('popup').innerHTML = data;
+                });
+            document.getElementById('popup').open = true;
+        }
+
+        function ouvrir_popup_ajout(idActivite) {
+            fetch("/activites/ajouter/" + encodeURIComponent(idActivite), {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('popup').innerHTML = data;
+                });
+            document.getElementById('popup').open = true;
+        }
+
+        function ouvrir_popup_creerProgramme(idActivite) {
+            document.getElementById('idActivite').value = idActivite;
+            document.getElementById('creerProgramme').open = true;
+        }
+
+        function creerProgramme(event, form) {
+            event.preventDefault();
+
+            const nom = form.elements['nom'].value;
+            const idActivite = form.elements['idActivite'].value;
+            fetch("/programmes/creer?nom=" + encodeURIComponent(nom)
+                + "&idActivite=" + encodeURIComponent(idActivite), {
+                method: 'POST'
+            }).then(response => response.text())
+                .then(data => {
+                    document.getElementById('popup').innerHTML = data;
+                })
+            document.getElementById('creerProgramme').open = false;
+        }
+
+        function fermer_popup(nom) {
+            document.getElementById(nom).open = false;
+        }
+    </script>
+
+    <nav th:replace="~{fragments/base :: header}">...</nav>
+
+
+    <div class="recherche">
+        <input id="search" type="search" name="search" onkeyup="recherche()" placeholder="Rechercher un nom d'activité"/>
+    </div>
+
+    <div id="grille">
+        <br>
+        <p class="recommandations">Vos recommandations</p>
+        <br>
+
+        <div class="grille">
+            <article th:each="activite : ${activites}">
+                <header th:text="${activite.nom}"></header>
+                <div class="body">
+                    <div class="desc">
+                        <p>&#128221</p>
+                        <p class="description" th:text="${activite.description}"></p>
+                    </div>
+                    <div class="adre">
+                        <p>&#127968</p>
+                        <p class="adresse" th:text="${activite.adresse}"></p>
+                    </div>
+                </div>
+                <footer>
+                    <button class="secondary" th:attr="id=${activite.id}" onclick="ouvrir_popup_details(this.id)">+ Détails</button>
+                    <button th:attr="id=${activite.id}" onclick="ouvrir_popup_ajout(this.id)">Ajouter au programme</button>
+                </footer>
+            </article>
+        </div>
+    </div>
+
+
+    <dialog id="popup"></dialog>
+
+    <dialog id="creerProgramme">
+        <article>
+            <header><h3>Créer un nouveau programme</h3></header>
+
+            <form method="post" onsubmit="creerProgramme(event, this)">
+                <input type="hidden" id="idActivite" name="idActivite" value="">
+                <p>Entrer le nom de votre nouveau programme :</p>
+                <input type="text" name="nom">
+                <hr>
+                <div class="foot">
+                    <button type="button" class="secondary" onclick="fermer_popup('creerProgramme')">Annuler</button>
+                    <button type="submit" class="confirmer">Créer</button>
+                </div>
+            </form>
+        </article>
+    </dialog>
+
+
+
+    <div th:replace="~{fragments/base :: footer}">...</div>
+</body>
+</html>

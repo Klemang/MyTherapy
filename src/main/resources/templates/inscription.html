@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/styles/base.css">
+
+    <link rel="stylesheet" href="/styles/inscription.css">
+    <title>Inscription - MyTherapy</title>
+</head>
+<body>
+    <nav th:replace="~{fragments/base :: header}">...</nav>
+
+
+
+    <div class="card">
+        <article>
+            <h3>Inscription</h3>
+            <form method="POST" action="/inscription">
+                Prenom <input type="text" name="prenom" placeholder="Prenom" autocomplete="given-name" required>
+                Nom <input type="text" name="nom" placeholder="Nom" autocomplete="family-name" required>
+                Age <input type="number" name="age" placeholder="Age">
+                Email <input type="email" name="email" placeholder="Email" autocomplete="email" required>
+                Mot de passe <input type="password" name="motdepasse" placeholder="Mot de passe" autocomplete="new-password" required>
+                Pathologie :
+                <select name="pathologie" required>
+                    <option value="0" selected>Aucune</option>
+                    <option th:each="patho : ${pathologies}" th:value="${patho.getId()}" th:text="${patho.getNom()}"></option>
+                </select>
+                <br>
+                <div class="signup">
+                    <input type="submit" value="S'inscrire">
+                </div>
+            </form>
+
+            <p class="p_error" th:text="${error}"></p>
+            <br>
+            <p class="p_login">Déjà inscrit ? <a class="login" href="/connexion">Se connecter</a> !</p>
+        </article>
+    </div>
+
+
+
+    <div th:replace="~{fragments/base :: footer}">...</div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/styles/base.css">
+
+    <link rel="stylesheet" href="/styles/compte.css">
+    <title>Mon compte - MyTherapy</title>
+</head>
+<body>
+    <script>
+        function modif_form_compte() {
+            document.querySelectorAll("fieldset input, fieldset select").forEach((champ) => champ.disabled = false);
+
+            document.getElementById("modifier").hidden = true;
+            document.getElementById("enregistrer").hidden = false;
+        }
+
+        function supp_compte_popup() {
+            document.getElementById("popup").open = true;
+        }
+
+        function fermer_popup() {
+            document.getElementById("popup").open = false;
+        }
+    </script>
+
+
+    <nav th:replace="~{fragments/base :: header}">...</nav>
+
+
+
+    <article>
+        <div class="card">
+            <div class="menu_gauche">
+                <div>
+                    <h1>Bienvenue</h1>
+                    <h1 th:text="${session.utilisateur.prenom} + ' ' + ${session.utilisateur.nom}"></h1>
+                </div>
+                <hr>
+                <ul>
+                    <li th:class="${section == 'profil'} ? 'active' : ''"><a th:href="@{/compte/profil}">Mon profil</a></li>
+                    <li th:class="${section == 'mdp'} ? 'active' : ''"><a th:href="@{/compte/mdp}">Changer mot de passe</a></li>
+                    <li class="deconnexion"><a th:href="@{/deconnexion}">Déconnexion</a></li>
+                </ul>
+            </div>
+
+
+            <div class="menu_droit" th:if="${section == 'profil'}">
+                <p><strong>Informations du profil</strong></p>
+
+                <p class="p_success" th:text="${success}"></p>
+                <p class="p_error" th:text="${error}"></p>
+                <form method="POST" action="/compte/profil">
+                    <input type="hidden" name="section" value="profil">
+
+                    <fieldset class="grid"><label>Prenom :</label><input type="text" name="prenom" th:value="${session.utilisateur.prenom}" disabled required></fieldset>
+                    <fieldset class="grid"><label>Nom : </label><input type="text" name="nom" th:value="${session.utilisateur.nom}" disabled required></fieldset>
+                    <fieldset class="grid"><label>Age : </label><input type="number" name="age" th:value="${session.utilisateur.age}" disabled required></fieldset>
+                    <fieldset class="grid"><label>Email :</label><input type="email" name="email" th:value="${session.utilisateur.email}" disabled required></fieldset>
+                    <fieldset class="grid">
+                        <label>Pathologie : </label>
+                        <select name="pathologie" disabled required>
+                            <option value="0" th:selected="${null == session.utilisateur.pathologie}">Aucune</option>
+                            <option th:each="patho : ${pathologies}" th:value="${patho.getId()}" th:text="${patho.getNom()}" th:selected="${session.utilisateur.pathologie != null && patho.getId() == session.utilisateur.pathologie.id}"></option>
+                        </select>
+                    </fieldset>
+
+                    <br>
+                    <div class="buttons_compte">
+                        <button onclick="modif_form_compte()" class="modifier" id="modifier" type="button"><strong>&#128393</strong> &nbsp Modifier</button>
+                        <button class="enregistrer" id="enregistrer" type="submit" hidden><strong>&#10003</strong> &nbsp Enregistrer</button>
+                        <button class="supprimer" type="button" onclick="supp_compte_popup()"><strong>&#88</strong> &nbsp Supprimer le compte</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="menu_droit" th:if="${section == 'mdp'}">
+                <p><strong>Changer le mot de passe</strong></p>
+
+                <p class="p_success" th:text="${success}"></p>
+                <p class="p_error" th:text="${error}"></p>
+                <form method="POST" action="/compte/mdp">
+                    <input type="hidden" name="section" value="mdp">
+
+                    <fieldset class="grid"><label>Mot de passe actuel :</label><input type="password" name="mdp_actuel" required></fieldset>
+                    <fieldset class="grid"><label>Nouveau mot de passe : </label><input type="password" name="mdp_nouveau" required></fieldset>
+
+                    <br>
+                    <div class="buttons_compte">
+                        <button class="enregistrer" type="submit"><strong>&#10003</strong> &nbsp Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </article>
+
+    <dialog id="popup">
+        <article>
+            <h2>Suppression du compte</h2>
+            <p>Souhaitez-vous vraiment supprimer <strong>définitivement</strong> votre compte ?</p>
+            <footer>
+                <button class="secondary" id="btn_annuler" onclick="fermer_popup()">Annuler</button>
+                <form action="/compte/profil/suppression" method="post">
+                    <button class="confirmer" type="submit">Confirmer</button>
+                </form>
+            </footer>
+        </article>
+    </dialog>
+
+
+
+    <div th:replace="~{fragments/base :: footer}">...</div>
+</body>
+</html>
